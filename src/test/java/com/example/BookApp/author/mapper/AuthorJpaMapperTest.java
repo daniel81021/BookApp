@@ -18,8 +18,8 @@ class AuthorJpaMapperTest {
     private final Long ID = 1L;
     private final Long VERSION = 1L;
     private static final String NAME = "Daniel";
-    private static final String NAME_2 = "Ziola";
-    private static final String SURNAME = "Emil";
+    private static final String NAME_2 = "Emil";
+    private static final String SURNAME = "Ziola";
     private static final String SURNAME_2 = "Karewicz";
 
     @Autowired

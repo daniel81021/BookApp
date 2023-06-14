@@ -6,7 +6,12 @@ import com.example.BookApp.author.mapper.AuthorJpaMapper;
 import com.example.BookApp.author.repository.AuthorJpaRepository;
 import com.example.BookApp.author.service.AuthorJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class AuthorJpaServiceImpl implements AuthorJpaService {
 
     @Autowired
