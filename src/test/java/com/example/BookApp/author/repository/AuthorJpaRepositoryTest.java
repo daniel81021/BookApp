@@ -2,7 +2,6 @@ package com.example.BookApp.author.repository;
 
 import com.example.BookApp.author.constants.AuthorMessageConstants;
 import com.example.BookApp.author.domain.AuthorJpa;
-import com.example.BookApp.common.Audit;
 import com.example.BookApp.common.CommonMessageConstants;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
