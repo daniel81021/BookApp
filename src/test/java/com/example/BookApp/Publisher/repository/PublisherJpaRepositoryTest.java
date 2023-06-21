@@ -1,18 +1,19 @@
-package com.example.BookApp.Publisher.repository;
+package com.example.BookApp.publisher.repository;
 
-import com.example.BookApp.Publisher.domain.PublisherJpa;
+import com.example.BookApp.publisher.domain.PublisherJpa;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class PublisherJpaRepositoryTest {
 
     private final String NAME = "Publisher";
+
 
     @Autowired
     private PublisherJpaRepository publisherJpaRepository;
@@ -36,6 +37,21 @@ class PublisherJpaRepositoryTest {
         Assertions.assertThat(saved.getName()).isEqualTo(NAME);
     }
 
+    @Test
+    void shouldThrowExceptionWhenPublisherExists(){
+
+        // given
+        PublisherJpa publisherJpa = createPublisherJpa(NAME);
+
+        PublisherJpa saved = publisherJpaRepository.save(publisherJpa);
+
+        PublisherJpa publisherJpa2 = createPublisherJpa(NAME);
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(()-> publisherJpaRepository.save(publisherJpa2))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
     private PublisherJpa createPublisherJpa(String name){
         PublisherJpa publisherJpa = new PublisherJpa();
         publisherJpa.setName(name);

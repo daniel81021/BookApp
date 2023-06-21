@@ -1,4 +1,4 @@
-package com.example.BookApp.Publisher.domain;
+package com.example.BookApp.publisher.domain;
 
 import com.example.BookApp.common.Audit;
 import com.example.BookApp.common.CommonMessageConstants;

@@ -1,6 +1,6 @@
-package com.example.BookApp.Publisher.repository;
+package com.example.BookApp.publisher.repository;
 
-import com.example.BookApp.Publisher.domain.PublisherJpa;
+import com.example.BookApp.publisher.domain.PublisherJpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
