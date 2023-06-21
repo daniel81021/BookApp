@@ -1,0 +1,2 @@
+ALTER TABLE Publisher CHANGE Name Name VARCHAR( 32 )
+CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL;

@@ -13,6 +13,8 @@ import org.springframework.test.annotation.DirtiesContext;
 class PublisherJpaRepositoryTest {
 
     private final String NAME = "Publisher";
+    private final String NAME_SMALL = "publisher";
+
 
 
     @Autowired
@@ -46,6 +48,23 @@ class PublisherJpaRepositoryTest {
         PublisherJpa saved = publisherJpaRepository.save(publisherJpa);
 
         PublisherJpa publisherJpa2 = createPublisherJpa(NAME);
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(()-> publisherJpaRepository.save(publisherJpa2))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPublisherExistsButWithCapitalLetter(){
+
+
+        // given
+        PublisherJpa publisherJpa = createPublisherJpa(NAME);
+
+        PublisherJpa saved = publisherJpaRepository.save(publisherJpa);
+
+        PublisherJpa publisherJpa2 = createPublisherJpa(NAME_SMALL);
 
         // when
         // then
