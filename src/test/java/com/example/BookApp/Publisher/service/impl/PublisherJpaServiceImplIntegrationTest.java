@@ -1,9 +1,8 @@
-package com.example.BookApp.Publisher.service.impl;
+package com.example.BookApp.publisher.service.impl;
 
 import com.example.BookApp.author.constants.AuthorMessageConstants;
 import com.example.BookApp.common.CommonMessageConstants;
 import com.example.BookApp.publisher.domain.Publisher;
-import com.example.BookApp.publisher.repository.PublisherJpaRepository;
 import com.example.BookApp.publisher.service.PublisherJpaService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import javax.validation.ConstraintViolationException;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class PublisherJpaServiceImplIntegrationTest {

@@ -1,11 +1,10 @@
-package com.example.BookApp.Publisher.service.impl;
+package com.example.BookApp.publisher.service.impl;
 
 import com.example.BookApp.common.Audit;
 import com.example.BookApp.publisher.domain.Publisher;
 import com.example.BookApp.publisher.domain.PublisherJpa;
 import com.example.BookApp.publisher.mapper.PublisherMapper;
 import com.example.BookApp.publisher.repository.PublisherJpaRepository;
-import com.example.BookApp.publisher.service.impl.PublisherJpaServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

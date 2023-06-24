@@ -1,9 +1,8 @@
-package com.example.BookApp.Publisher.repository;
+package com.example.BookApp.publisher.repository;
 
 import com.example.BookApp.author.constants.AuthorMessageConstants;
 import com.example.BookApp.common.CommonMessageConstants;
 import com.example.BookApp.publisher.domain.PublisherJpa;
-import com.example.BookApp.publisher.repository.PublisherJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

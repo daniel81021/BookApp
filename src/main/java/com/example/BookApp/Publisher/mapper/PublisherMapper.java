@@ -2,6 +2,7 @@ package com.example.BookApp.publisher.mapper;
 
 import com.example.BookApp.publisher.domain.Publisher;
 import com.example.BookApp.publisher.domain.PublisherJpa;
+import com.example.BookApp.publisher.domain.PublisherVM;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
