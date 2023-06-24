@@ -87,7 +87,7 @@ class AuthorJpaServiceImplIntegrationTest {
         // then
         Assertions.assertThat(savedAuthor) //
                 .usingRecursiveComparison() //
-                .ignoringFields("id", "version") //
+                .ignoringFields("id", "version", "audit") //
                 .isEqualTo(author);
         Assertions.assertThat(savedAuthor.getId()).isNotNull();
         Assertions.assertThat(savedAuthor.getVersion()).isNotNull();

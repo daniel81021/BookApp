@@ -1,5 +1,6 @@
 package com.example.BookApp.author.domain;
 
+import com.example.BookApp.common.Audit;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,4 +17,6 @@ public class Author {
     private String lastName;
 
     private Long version;
+
+    private Audit audit;
 }
