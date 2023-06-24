@@ -5,7 +5,6 @@ import com.example.BookApp.publisher.domain.PublisherVM;
 import com.example.BookApp.publisher.mapper.PublisherVMMapper;
 import com.example.BookApp.publisher.service.PublisherJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
