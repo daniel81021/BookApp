@@ -45,6 +45,8 @@ class AuthorJpaServiceImplIntegrationTest {
         Assertions.assertThat(savedAuthor.getLastName()).isEqualTo(surname);
         Assertions.assertThat(savedAuthor.getId()).isNotNull();
         Assertions.assertThat(savedAuthor.getVersion()).isNotNull();
+        Assertions.assertThat(savedAuthor.getAudit()).isNotNull();
+        Assertions.assertThat(savedAuthor.getAudit().getCreatedOn()).isEqualTo(savedAuthor.getAudit().getUpdatedOn());
     }
 
     @ParameterizedTest
