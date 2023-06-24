@@ -1,6 +1,5 @@
 package com.example.BookApp.author.service.impl;
 
-import com.example.BookApp.author.constants.AuthorMessageConstants;
 import com.example.BookApp.author.domain.Author;
 import com.example.BookApp.author.service.AuthorJpaService;
 import com.example.BookApp.common.CommonMessageConstants;
@@ -115,8 +114,8 @@ class AuthorJpaServiceImplIntegrationTest {
 
     private static Stream<Arguments> provideInvalidData() {
         return Stream.of(
-                Arguments.of("", AuthorMessageConstants.NOT_BLANK_MSG),
-                Arguments.of("  ", AuthorMessageConstants.NOT_BLANK_MSG),
+                Arguments.of("", CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of("  ", CommonMessageConstants.NOT_BLANK_MSG),
                 Arguments.of("A", CommonMessageConstants.VALUE_TOO_SHORT),
                 Arguments.of(TOO_LONG_STRING_32, CommonMessageConstants.VALUE_TOO_LONG)
         );

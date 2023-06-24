@@ -1,7 +1,5 @@
 package com.example.BookApp.author.domain;
 
-import com.example.BookApp.author.constants.AuthorMessageConstants;
-import com.example.BookApp.common.Audit;
 import com.example.BookApp.common.CommonMessageConstants;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -20,13 +18,13 @@ public class AuthorVM {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = AuthorMessageConstants.NOT_BLANK_MSG)
+    @NotBlank(message = CommonMessageConstants.NOT_BLANK_MSG)
     @Size(max = 32, message = CommonMessageConstants.VALUE_TOO_LONG)
     @Length(min = 2, message = CommonMessageConstants.VALUE_TOO_SHORT)
     private String firstName;
 
     @Column(nullable = false)
-    @NotBlank(message = AuthorMessageConstants.NOT_BLANK_MSG)
+    @NotBlank(message = CommonMessageConstants.NOT_BLANK_MSG)
     @Size(max = 32, message = CommonMessageConstants.VALUE_TOO_LONG)
     @Length(min = 2, message = CommonMessageConstants.VALUE_TOO_SHORT)
     private String lastName;
