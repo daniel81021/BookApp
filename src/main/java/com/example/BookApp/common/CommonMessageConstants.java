@@ -1,7 +1,5 @@
 package com.example.BookApp.common;
 
-import java.text.MessageFormat;
-
 public class CommonMessageConstants {
 
     public static final String VALUE_TOO_SHORT = "Provided value is too short!";

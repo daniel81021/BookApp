@@ -1,9 +1,6 @@
 package com.example.BookApp.publisher.domain;
 
 import com.example.BookApp.common.CommonMessageConstants;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.jackson.JsonComponent;
