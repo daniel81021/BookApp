@@ -19,9 +19,15 @@ public class AuthorController {
 
     @PostMapping("/add")
     @ResponseBody
-    AuthorVM save(@RequestBody AuthorVM authorVM){
+    AuthorVM save(@RequestBody AuthorVM authorVM) {
         Author author = authorVMMapper.toAuthor(authorVM);
         Author saved = authorJpaService.saveAuthor(author);
         return authorVMMapper.toAuthorVM(saved);
+    }
+
+    @GetMapping("/find/{id}")
+    @ResponseBody
+    AuthorVM findById(@PathVariable Long id) {
+        return authorVMMapper.toAuthorVM(authorJpaService.findById(id));
     }
 }
