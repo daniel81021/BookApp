@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,17 +48,21 @@ class AuthorControllerTest {
     @MockBean
     private AuthorVMMapper authorVMMapperMock;
 
-    AuthorVM input;
-    Author toSave;
-    Author saved;
-    AuthorVM output;
+    private final Long ID = 1L;
+    private final Long VERSION = 1L;
+    private final String NAME = "name";
+    private final String SURNAME = "surname";
+    private AuthorVM input;
+    private Author toSave;
+    private Author saved;
+    private AuthorVM output;
 
     @BeforeEach
     public void before() {
-        input = createAuthorVM(null, "name", "surname", null);
-        toSave = createAuthor(null, "name", "surname",null);
-        saved = createAuthor(1L, "name", "surname",1L);
-        output = createAuthorVM(1L, "name", "surname",1L);
+        input = createAuthorVM(null, NAME, SURNAME, null);
+        toSave = createAuthor(null, NAME, SURNAME, null);
+        saved = createAuthor(ID, NAME, SURNAME, VERSION);
+        output = createAuthorVM(ID, NAME, SURNAME, VERSION);
     }
 
     @Test
@@ -78,14 +83,37 @@ class AuthorControllerTest {
         // then
 
         response.andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", CoreMatchers.is(output.getFirstName())))
-                .andExpect(jsonPath("$.lastName", CoreMatchers.is(output.getLastName())))
-                .andExpect(jsonPath("$.id", CoreMatchers.is(output.getId().intValue())))
-                .andExpect(jsonPath("$.version", CoreMatchers.is(output.getVersion().intValue())))
+                .andExpect(jsonPath("$.firstName", CoreMatchers.is(NAME)))
+                .andExpect(jsonPath("$.lastName", CoreMatchers.is(SURNAME)))
+                .andExpect(jsonPath("$.id", CoreMatchers.is(ID.intValue())))
+                .andExpect(jsonPath("$.version", CoreMatchers.is(VERSION.intValue())))
                 .andDo(MockMvcResultHandlers.print());
 
         Mockito.verify(authorVMMapperMock, Mockito.times(1)).toAuthor(any());
         Mockito.verify(authorJpaServiceMock, Mockito.times(1)).saveAuthor(toSave);
+        Mockito.verify(authorVMMapperMock, Mockito.times(1)).toAuthorVM(saved);
+    }
+
+    @Test
+    void findAuthorById() throws Exception {
+
+        // given
+        Mockito.when(authorJpaServiceMock.findById(1L)).thenReturn(saved);
+        Mockito.when(authorVMMapperMock.toAuthorVM(saved)).thenReturn(output);
+
+        // when
+        ResultActions response = mockMvc.perform(get("/author/find/" + ID.intValue())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", CoreMatchers.is(NAME)))
+                .andExpect(jsonPath("$.lastName", CoreMatchers.is(SURNAME)))
+                .andExpect(jsonPath("$.id", CoreMatchers.is(ID.intValue())))
+                .andExpect(jsonPath("$.version", CoreMatchers.is(VERSION.intValue())))
+                .andDo(MockMvcResultHandlers.print());
+
+        Mockito.verify(authorJpaServiceMock, Mockito.times(1)).findById(ID);
         Mockito.verify(authorVMMapperMock, Mockito.times(1)).toAuthorVM(saved);
     }
 
