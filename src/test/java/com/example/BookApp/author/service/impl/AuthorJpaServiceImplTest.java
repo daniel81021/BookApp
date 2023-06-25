@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.mockito.Mockito.times;
 
@@ -58,6 +59,39 @@ class AuthorJpaServiceImplTest {
         Mockito.verify(authorJpaMapperMock, times(1)).toAuthorJpa(authorNoIdAndVersion);
         Mockito.verify(authorJpaRepositoryMock, times(1)).save(authorJpaNoIdAndVersion);
         Mockito.verify(authorJpaMapperMock, times(1)).toAuthor(savedAuthorJpa);
+    }
+
+    @Test
+    void shouldReturnAuthorFoundById(){
+
+        // given
+        AuthorJpa authorJpa = createAuthorJpa(NAME, SURNAME);
+        Author author = createAuthor(NAME, SURNAME);
+        Mockito.when(authorJpaRepositoryMock.findById(ID)).thenReturn(Optional.of(authorJpa));
+        Mockito.when(authorJpaMapperMock.toAuthor(authorJpa)).thenReturn(author);
+
+        // when
+        Author result = authorJpaService.findById(ID);
+
+        // then
+        Assertions.assertThat(result.getId()).isEqualTo(ID);
+
+        Mockito.verify(authorJpaRepositoryMock, times(1)).findById(ID);
+        Mockito.verify(authorJpaMapperMock, times(1)).toAuthor(authorJpa);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIdIsWrong() {
+
+        // given
+        Mockito.when(authorJpaRepositoryMock.findById(ID)).thenReturn(Optional.empty());
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(()-> authorJpaService.findById(ID))
+                        .isInstanceOf(IllegalArgumentException.class);
+
+        Mockito.verify(authorJpaRepositoryMock, times(1)).findById(ID);
     }
 
     private Author createAuthor(String name, String surname){

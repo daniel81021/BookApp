@@ -1,6 +1,8 @@
 package com.example.BookApp.author.service.impl;
 
 import com.example.BookApp.author.domain.Author;
+import com.example.BookApp.author.domain.AuthorJpa;
+import com.example.BookApp.author.repository.AuthorJpaRepository;
 import com.example.BookApp.author.service.AuthorJpaService;
 import com.example.BookApp.common.CommonMessageConstants;
 import org.assertj.core.api.Assertions;
@@ -27,6 +29,8 @@ class AuthorJpaServiceImplIntegrationTest {
 
     @Autowired
     AuthorJpaService authorJpaService;
+    @Autowired
+    private AuthorJpaRepository authorJpaRepository;
 
     @ParameterizedTest
     @MethodSource("provideValues")
@@ -57,7 +61,7 @@ class AuthorJpaServiceImplIntegrationTest {
 
         // when
         // then
-        Assertions.assertThatThrownBy(()->authorJpaService.saveAuthor(author))
+        Assertions.assertThatThrownBy(() -> authorJpaService.saveAuthor(author))
                 .isInstanceOf(ConstraintViolationException.class)
                 .hasMessageContaining(msg);
     }
@@ -71,13 +75,13 @@ class AuthorJpaServiceImplIntegrationTest {
 
         // when
         // then
-        Assertions.assertThatThrownBy(()->authorJpaService.saveAuthor(author))
+        Assertions.assertThatThrownBy(() -> authorJpaService.saveAuthor(author))
                 .isInstanceOf(ConstraintViolationException.class)
                 .hasMessageContaining(msg);
     }
 
     @Test
-    void shouldThrowExceptionWhenAuthorSavedSecondTime(){
+    void shouldThrowExceptionWhenAuthorSavedSecondTime() {
 
         // given
         Author author = createAuthor(NAME, SURNAME);
@@ -92,18 +96,58 @@ class AuthorJpaServiceImplIntegrationTest {
                 .isEqualTo(author);
         Assertions.assertThat(savedAuthor.getId()).isNotNull();
         Assertions.assertThat(savedAuthor.getVersion()).isNotNull();
-        Assertions.assertThatThrownBy(()->authorJpaService.saveAuthor(author2))
+        Assertions.assertThatThrownBy(() -> authorJpaService.saveAuthor(author2))
                 .isInstanceOf(DataIntegrityViolationException.class);
 
     }
-    private Author createAuthor(String name, String surname){
+
+    @Test
+    void shouldFindAuthorById(){
+
+        // given
+        AuthorJpa authorJpa = createAuthorJpa(NAME, SURNAME);
+        AuthorJpa savedAuthor = authorJpaRepository.save(authorJpa);
+
+        AuthorJpa authorJpa2 = createAuthorJpa(NAME_2, SURNAME_2);
+        AuthorJpa savedAuthor2 = authorJpaRepository.save(authorJpa2);
+
+        // when
+        Author foundById = authorJpaService.findById(savedAuthor2.getId());
+
+        // then
+        Assertions.assertThat(foundById).isNotNull();
+        Assertions.assertThat(foundById.getClass()).isEqualTo(Author.class);
+        Assertions.assertThat(foundById.getId()).isEqualTo(savedAuthor2.getId());
+        Assertions.assertThat(foundById.getFirstName()).isEqualTo(savedAuthor2.getFirstName());
+        Assertions.assertThat(foundById.getLastName()).isEqualTo(savedAuthor2.getLastName());
+        Assertions.assertThat(foundById.getVersion()).isEqualTo(savedAuthor2.getVersion());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIdIsIncorrect(){
+
+        // given
+        // when
+        // then
+        Assertions.assertThatThrownBy(()-> authorJpaService.findById(100L))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private Author createAuthor(String name, String surname) {
         return Author.builder() //
                 .firstName(name) //
                 .lastName(surname) //
                 .build();
     }
 
-    private static Stream<Arguments> provideValues(){
+    private AuthorJpa createAuthorJpa(String name, String surname){
+        AuthorJpa authorJpa = new AuthorJpa();
+        authorJpa.setFirstName(name);
+        authorJpa.setLastName(surname);
+        return authorJpa;
+    }
+
+    private static Stream<Arguments> provideValues() {
         return Stream.of(
                 Arguments.of(NAME, SURNAME),
                 Arguments.of(NAME_2, SURNAME_2),

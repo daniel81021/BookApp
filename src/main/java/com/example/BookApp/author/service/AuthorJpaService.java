@@ -6,4 +6,6 @@ import com.example.BookApp.author.domain.Author;
 public interface AuthorJpaService {
 
     Author saveAuthor(Author author);
+
+    Author findById(Long id);
 }

@@ -25,4 +25,11 @@ public class AuthorJpaServiceImpl implements AuthorJpaService {
         AuthorJpa savedAuthor = authorJpaRepository.save(authorJpa);
         return authorJpaMapper.toAuthor(savedAuthor);
     }
+
+    @Override
+    public Author findById(Long id) {
+        return authorJpaRepository.findById(id) //
+                .map(authorJpaMapper::toAuthor) //
+                .orElseThrow(IllegalArgumentException::new);
+    }
 }
