@@ -21,8 +21,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,9 +54,15 @@ class AuthorControllerTest {
     private AuthorVMMapper authorVMMapperMock;
 
     private final Long ID = 1L;
+    private final Long ID_2 = 2L;
+    private final Long ID_3 = 3L;
     private final Long VERSION = 1L;
     private final String NAME = "name";
+    private final String NAME_2 = "name_2";
+    private final String NAME_3 = "name_3";
     private final String SURNAME = "surname";
+    private final String SURNAME_2 = "surname_2";
+    private final String SURNAME_3 = "surname_3";
     private AuthorVM input;
     private Author toSave;
     private Author saved;
@@ -115,6 +126,43 @@ class AuthorControllerTest {
 
         Mockito.verify(authorJpaServiceMock, Mockito.times(1)).findById(ID);
         Mockito.verify(authorVMMapperMock, Mockito.times(1)).toAuthorVM(saved);
+    }
+
+    @Test
+    void findAll() throws Exception {
+
+        // given
+        Author author = createAuthor(ID, NAME, SURNAME, VERSION);
+        Author author2 = createAuthor(ID_2, NAME_2, SURNAME_2, VERSION);
+        Author author3 = createAuthor(ID_3, NAME_3, SURNAME_3, VERSION);
+
+        List<Author> authors = List.of(author, author2, author3);
+
+        AuthorVM authorVM = createAuthorVM(ID, NAME, SURNAME, VERSION);
+        AuthorVM authorVM2 = createAuthorVM(ID_2, NAME_2, SURNAME_2, VERSION);
+        AuthorVM authorVM3 = createAuthorVM(ID_3, NAME_3, SURNAME_3, VERSION);
+
+        List<AuthorVM> authorVMs = List.of(authorVM, authorVM2, authorVM3);
+
+        Mockito.when(authorJpaServiceMock.findAllAuthors()).thenReturn(authors);
+        Mockito.when(authorVMMapperMock.toAuthorVMs(authors)).thenReturn(authorVMs);
+
+        // when
+        ResultActions response = mockMvc.perform(get("/author/findAll")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        response.andExpect(status().isOk()) //
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0]").exists())
+                .andExpect(jsonPath("$[0].id").value(ID))
+                .andExpect(jsonPath("$[0].firstName").value(NAME))
+                .andExpect(jsonPath("$[0].lastName").value(SURNAME))
+                .andExpect(jsonPath("$[0].version").value(VERSION))
+                .andExpect(jsonPath("$[1]").exists())
+                .andExpect(jsonPath("$[2]").exists())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private Author createAuthor(Long id, String name, String surname, Long version) {

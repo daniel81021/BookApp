@@ -7,6 +7,8 @@ import com.example.BookApp.author.service.AuthorJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -37,5 +39,12 @@ public class AuthorController {
         Author author = authorVMMapper.toAuthor(authorVM);
         Author updatedAuthor = authorJpaService.updateAuthor(author);
         return authorVMMapper.toAuthorVM(updatedAuthor);
+    }
+
+    @GetMapping("/findAll")
+    @ResponseBody
+    List<AuthorVM> findAll(){
+        List<Author> authors = authorJpaService.findAllAuthors();
+        return authorVMMapper.toAuthorVMs(authors);
     }
 }
