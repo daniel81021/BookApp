@@ -10,10 +10,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Stream;
 
 @SpringBootTest
@@ -39,7 +41,7 @@ class AuthorJpaRepositoryTest {
     private AuthorJpaRepository authorJpaRepository;
 
     @Test
-    void saveAuthor(){
+    void saveAuthor() {
 
         // given
         AuthorJpa authorJpa = createAuthor(NAME, SURNAME);
@@ -62,12 +64,12 @@ class AuthorJpaRepositoryTest {
     }
 
     @Test
-    void shouldSaveAuthorWithTheSameNameButDifferentSurnameAsFirst(){
+    void shouldSaveAuthorWithTheSameNameButDifferentSurnameAsFirst() {
 
         // given
         AuthorJpa authorJpa = createAuthor(NAME, SURNAME);
 
-        AuthorJpa authorJpa2 = createAuthor(NAME, SURNAME+"2");
+        AuthorJpa authorJpa2 = createAuthor(NAME, SURNAME + "2");
 
         // when
         AuthorJpa saved = this.authorJpaRepository.save(authorJpa);
@@ -79,12 +81,12 @@ class AuthorJpaRepositoryTest {
         Assertions.assertThat(saved.getLastName()).isEqualTo(SURNAME);
         Assertions.assertThat(saved2.getId()).isNotNull();
         Assertions.assertThat(saved2.getFirstName()).isEqualTo(NAME);
-        Assertions.assertThat(saved2.getLastName()).isEqualTo(SURNAME+"2");
+        Assertions.assertThat(saved2.getLastName()).isEqualTo(SURNAME + "2");
 
     }
 
     @Test
-    void shouldThrowExceptionWhenTheSameAuthorIsSaved(){
+    void shouldThrowExceptionWhenTheSameAuthorIsSaved() {
 
         // given
         AuthorJpa authorJpa = createAuthor(NAME, SURNAME);
@@ -97,20 +99,20 @@ class AuthorJpaRepositoryTest {
 
         Assertions.assertThat(saved.getId()).isNotNull();
 
-        Assertions.assertThatThrownBy(()-> this.authorJpaRepository.save(authorJpa2))
+        Assertions.assertThatThrownBy(() -> this.authorJpaRepository.save(authorJpa2))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @ParameterizedTest
     @MethodSource("provideStrings")
-    void shouldThrowExceptionWhenNameTooShortOrBlankOrTooLong(String input, String msg){
+    void shouldThrowExceptionWhenNameTooShortOrBlankOrTooLong(String input, String msg) {
 
         // given
         AuthorJpa authorJpa = createAuthor(input, SURNAME);
 
         // when
         // then
-        Assertions.assertThatThrownBy(()-> this.authorJpaRepository.save(authorJpa))
+        Assertions.assertThatThrownBy(() -> this.authorJpaRepository.save(authorJpa))
                 .isInstanceOf(ConstraintViolationException.class)
                 .hasMessageContaining(msg);
 
@@ -118,17 +120,38 @@ class AuthorJpaRepositoryTest {
 
     @ParameterizedTest
     @MethodSource("provideStrings")
-    void shouldThrowExceptionWhenSurnameTooShortOrBlankOrTooLong(String input, String msg){
+    void shouldThrowExceptionWhenSurnameTooShortOrBlankOrTooLong(String input, String msg) {
 
         // given
         AuthorJpa authorJpa = createAuthor(NAME, input);
 
         // when
         // then
-        Assertions.assertThatThrownBy(()-> this.authorJpaRepository.save(authorJpa))
+        Assertions.assertThatThrownBy(() -> this.authorJpaRepository.save(authorJpa))
                 .isInstanceOf(ConstraintViolationException.class)
                 .hasMessageContaining(msg);
 
+    }
+
+    @Test
+    void shouldReturnListOfAuthorJpasInDescOrderById() {
+
+        // given
+        AuthorJpa authorJpa = createAuthor(NAME, SURNAME);
+        AuthorJpa authorJpa2 = createAuthor(NAME + "_2", SURNAME + "_2");
+        AuthorJpa authorJpa3 = createAuthor(NAME + "_3", SURNAME + "_3");
+
+        authorJpaRepository.save(authorJpa);
+        authorJpaRepository.save(authorJpa2);
+        authorJpaRepository.save(authorJpa3);
+
+        // when
+        List<AuthorJpa> authors = authorJpaRepository.findAll(Sort.by(Sort.Order.desc("id")));
+        // then
+        Assertions.assertThat(authors.stream().map(AuthorJpa::getId))
+                .containsExactly(3L, 2L, 1L);
+        Assertions.assertThat(authors.stream().map(AuthorJpa::getFirstName))
+                .containsExactly(NAME + "_3", NAME + "_2", NAME);
     }
 
     private static Stream<Arguments> provideStrings() {
@@ -142,12 +165,13 @@ class AuthorJpaRepositoryTest {
 
     /**
      * This method creates simple {@link AuthorJpa} object with first- and lastName;
+     *
      * @param firstName {@link String} name;
-     * @param lastName {@link String} surname;
+     * @param lastName  {@link String} surname;
      * @return {@link AuthorJpa} object with first- and lastName;
      * Both provided params can not be blank, null, empty (ex. ""), longer than 32 and shorter than 2 digits.
      */
-    private AuthorJpa createAuthor(String firstName, String lastName){
+    private AuthorJpa createAuthor(String firstName, String lastName) {
         AuthorJpa authorJpa = new AuthorJpa();
         authorJpa.setFirstName(firstName);
         authorJpa.setLastName(lastName);

@@ -27,7 +27,15 @@ public class AuthorController {
 
     @GetMapping("/find/{id}")
     @ResponseBody
-    AuthorVM findById(@PathVariable Long id) {
+    AuthorVM findById(@PathVariable Long id) { //
         return authorVMMapper.toAuthorVM(authorJpaService.findById(id));
+    }
+
+    @PatchMapping("/update")
+    @ResponseBody
+    AuthorVM updateAuthor(@RequestBody AuthorVM authorVM){
+        Author author = authorVMMapper.toAuthor(authorVM);
+        Author updatedAuthor = authorJpaService.updateAuthor(author);
+        return authorVMMapper.toAuthorVM(updatedAuthor);
     }
 }
