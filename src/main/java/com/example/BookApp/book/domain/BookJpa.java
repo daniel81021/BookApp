@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Year;
@@ -65,7 +66,8 @@ public class BookJpa {
     @Length(min = 8, message = CommonMessageConstants.VALUE_TOO_SHORT)
     private String isbn;
 
-    @Column(name = "cover", nullable = false)
+    @Column(name = "cover")
+    @NotNull(message = CommonMessageConstants.NOT_BLANK_MSG)
     @Enumerated(EnumType.STRING)
     private CoverType cover;
 
@@ -77,9 +79,9 @@ public class BookJpa {
 
     @PrePersist
     private void prePersistForEntity() {
-        city = city == null ? "b.m.w." : city;
+        city = city == null || city.isBlank() ? "b.m.w." : city;
         publictaionYear = publictaionYear == null ? Year.of(1899) : publictaionYear;
-        isbn = cleanISBN(isbn);
+        isbn = isbn == null ? null : cleanISBN(isbn);
     }
 
     private String cleanISBN(String isbn) {
