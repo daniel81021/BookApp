@@ -3,7 +3,7 @@ CREATE TABLE book (
    title VARCHAR(50) NOT NULL,
    publisher_id BIGINT NULL,
    place_of_publication VARCHAR(32) NOT NULL,
-   year_of_publication SMALLINT NULL,
+   year_of_publication VARCHAR(8) NULL,
    publication_number INT NULL,
    isbn_number VARCHAR(13) NOT NULL,
    cover VARCHAR(255) NOT NULL,

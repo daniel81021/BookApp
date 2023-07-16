@@ -26,7 +26,4 @@ public class PublisherJpaServiceImpl implements PublisherJpaService {
         PublisherJpa saved = publisherJpaRepository.save(publisherJpa);
         return publisherMapper.toPublisher(saved);
     }
-
-
-
 }

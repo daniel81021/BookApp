@@ -18,7 +18,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.validation.ConstraintViolationException;
-import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,7 +46,7 @@ class BookJpaRepositoryTest {
     private static final String TITLE = "Title";
     private static final String TITLE_2 = "Title_2";
     private static final String CITY = "City";
-    private final Year YEAR_1999 = Year.of(1999);
+    private final String YEAR_1999 = "1999";
     private static final String ISBN = " 988 - 998 -  83-111  -  12 ";
     private static final String ISBN_TOO_SHORT = " 988 - 998 - ";
     private static final String ISBN_TOO_LONG = " 988 - 998 -  83-111  -  1212 ";
@@ -91,7 +90,7 @@ class BookJpaRepositoryTest {
         Assertions.assertThat(result.getAuthors().stream().map(AuthorJpa::getId).collect(Collectors.toList())) //
                 .containsExactlyInAnyOrder(saved3.getId(), saved2.getId(), saved.getId());
         Assertions.assertThat(result.getCity()).isEqualTo(CITY);
-        Assertions.assertThat(result.getPublictaionYear()).isEqualTo(YEAR_1999);
+        Assertions.assertThat(result.getPublicationYear()).isEqualTo(YEAR_1999);
         Assertions.assertThat(result.getPublisher()).isNotNull();
         Assertions.assertThat(result.getPublisher().getId()).isEqualTo(savedPublisherJpa.getId());
         Assertions.assertThat(result.getPublisher().getName()).isEqualTo(PUBLISHER_NAME);
@@ -249,13 +248,13 @@ class BookJpaRepositoryTest {
         return publisherJpa;
     }
 
-    private BookJpa createBookJpa(String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, Year year, String isbn, CoverType type) {
+    private BookJpa createBookJpa(String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type) {
         BookJpa bookJpa = new BookJpa();
         bookJpa.setTitle(title);
         bookJpa.setAuthors(authors);
         bookJpa.setCity(city);
         bookJpa.setPublisher(publisherJpa);
-        bookJpa.setPublictaionYear(year);
+        bookJpa.setPublicationYear(year);
         bookJpa.setIsbn(isbn);
         bookJpa.setCover(type);
         return bookJpa;

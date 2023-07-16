@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Builder
@@ -17,13 +18,13 @@ public class AuthorVM {
 
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     @NotBlank(message = CommonMessageConstants.NOT_BLANK_MSG)
     @Size(max = 32, message = CommonMessageConstants.VALUE_TOO_LONG)
     @Length(min = 2, message = CommonMessageConstants.VALUE_TOO_SHORT)
     private String firstName;
 
-    @Column(nullable = false)
+    @NotNull
     @NotBlank(message = CommonMessageConstants.NOT_BLANK_MSG)
     @Size(max = 32, message = CommonMessageConstants.VALUE_TOO_LONG)
     @Length(min = 2, message = CommonMessageConstants.VALUE_TOO_SHORT)

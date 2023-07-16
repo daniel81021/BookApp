@@ -15,8 +15,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,8 +51,9 @@ public class BookJpa {
     @Length(min = 2, message = CommonMessageConstants.VALUE_TOO_SHORT)
     private String city;
 
+    @Size(max=5, message = CommonMessageConstants.VALUE_TOO_LONG)
     @Column(name = "year_of_publication")
-    private Year publictaionYear;
+    private String publicationYear;
 
     @Column(name = "publication_number")
     @Min(1)
@@ -80,11 +79,12 @@ public class BookJpa {
     @PrePersist
     private void prePersistForEntity() {
         city = city == null || city.isBlank() ? "b.m.w." : city;
-        publictaionYear = publictaionYear == null ? Year.of(1899) : publictaionYear;
+        publicationYear = publicationYear == null ? "b.d.w" : publicationYear;
         isbn = isbn == null ? null : cleanISBN(isbn);
     }
 
-    private String cleanISBN(String isbn) {
+    private String cleanISBN(String isbn) { //
+
         return isbn.replaceAll("[ -]", "");
     }
 }

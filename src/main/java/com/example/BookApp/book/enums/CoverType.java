@@ -1,9 +1,5 @@
 package com.example.BookApp.book.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 public enum CoverType {
 
     HARDCOVER("hard"),
@@ -14,7 +10,8 @@ public enum CoverType {
 
     public final String value;
 
-    CoverType(String value) {
+    CoverType(String value) { //
+
         this.value = value;
     }
 }

@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface AuthorJpaMapper {
@@ -17,4 +18,8 @@ public interface AuthorJpaMapper {
     List<Author> toAuthors(List<AuthorJpa> authorJpas);
 
     List<AuthorJpa> toAuthorJpas(List<Author> authors);
+
+    Set<Author> toAuthorsSet(Set<AuthorJpa> authorJpasSet);
+
+    Set<AuthorJpa> toAuthorJpasSet(Set<Author> authorsSet);
 }
