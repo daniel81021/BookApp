@@ -15,7 +15,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -70,6 +72,10 @@ public class BookJpa {
     @Enumerated(EnumType.STRING)
     private CoverType cover;
 
+    @NotNull
+    @Min(value = 1, message = CommonMessageConstants.MIN_VALUE)
+    private Integer size;
+
     @Embedded
     private Audit audit = new Audit();
 
@@ -79,7 +85,7 @@ public class BookJpa {
     @PrePersist
     private void prePersistForEntity() {
         city = city == null || city.isBlank() ? "b.m.w." : city;
-        publicationYear = publicationYear == null ? "b.d.w" : publicationYear;
+        publicationYear = publicationYear == null || publicationYear.isBlank() ? "b.d.w" : publicationYear;
         isbn = isbn == null ? null : cleanISBN(isbn);
     }
 

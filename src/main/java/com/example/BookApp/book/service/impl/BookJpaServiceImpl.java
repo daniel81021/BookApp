@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,5 +26,16 @@ public class BookJpaServiceImpl implements BookJpaService {
         BookJpa bookJpa = bookMapper.toBookJpa(book);
         BookJpa saved = bookJpaRepository.save(bookJpa);
         return bookMapper.toBook(saved);
+    }
+
+    @Override
+    public Book findById(Long id) {
+        Optional<BookJpa> book = bookJpaRepository.findById(id);
+        if(book.isPresent()){
+            return bookMapper.toBook(book.get());
+        } else {
+            throw new IllegalArgumentException();
+        }
+
     }
 }

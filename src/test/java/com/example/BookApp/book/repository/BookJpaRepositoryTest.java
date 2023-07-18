@@ -51,6 +51,7 @@ class BookJpaRepositoryTest {
     private static final String ISBN_TOO_SHORT = " 988 - 998 - ";
     private static final String ISBN_TOO_LONG = " 988 - 998 -  83-111  -  1212 ";
     private final CoverType COVER_TYPE = CoverType.SOFT;
+    private static final Integer SIZE = 1;
 
     @Test
     void saveBook() {
@@ -73,7 +74,7 @@ class BookJpaRepositoryTest {
 
         PublisherJpa savedPublisherJpa = publisherJpaRepository.save(publisherJpa);
 
-        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE);
+        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
 
         // when
         BookJpa result = bookJpaRepository.save(bookJpa);
@@ -105,7 +106,7 @@ class BookJpaRepositoryTest {
 
     @ParameterizedTest
     @MethodSource("prepareData")
-    void shouldThrowExceptionsWhenIncorrectDataProvided(String title, String city, String isbn, String msg) {
+    void shouldThrowExceptionsWhenIncorrectDataProvided(String title, String city, String isbn, Integer size, String msg) {
 
         // given
         AuthorJpa authorJpa = createAuthor(NAME, SURNAME);
@@ -125,7 +126,7 @@ class BookJpaRepositoryTest {
 
         PublisherJpa savedPublisherJpa = publisherJpaRepository.save(publisherJpa);
 
-        BookJpa bookJpa = createBookJpa(title, authors, city, savedPublisherJpa, YEAR_1999, isbn, COVER_TYPE);
+        BookJpa bookJpa = createBookJpa(title, authors, city, savedPublisherJpa, YEAR_1999, isbn, COVER_TYPE, size);
 
         // when
         // then
@@ -155,7 +156,7 @@ class BookJpaRepositoryTest {
 
         PublisherJpa savedPublisherJpa = publisherJpaRepository.save(publisherJpa);
 
-        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, null);
+        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, null, SIZE);
 
         // when
         // then
@@ -185,10 +186,10 @@ class BookJpaRepositoryTest {
 
         PublisherJpa savedPublisherJpa = publisherJpaRepository.save(publisherJpa);
 
-        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE);
+        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
         bookJpaRepository.save(bookJpa);
 
-        BookJpa bookJpa2 = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE);
+        BookJpa bookJpa2 = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
 
         // when
         // then
@@ -222,10 +223,10 @@ class BookJpaRepositoryTest {
 
         PublisherJpa savedPublisherJpa = publisherJpaRepository.save(publisherJpa);
 
-        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE);
+        BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
         bookJpaRepository.save(bookJpa);
 
-        BookJpa bookJpa2 = createBookJpa(TITLE_2, authors2, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE);
+        BookJpa bookJpa2 = createBookJpa(TITLE_2, authors2, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
 
         // when
         BookJpa result = bookJpaRepository.save(bookJpa2);
@@ -248,7 +249,7 @@ class BookJpaRepositoryTest {
         return publisherJpa;
     }
 
-    private BookJpa createBookJpa(String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type) {
+    private BookJpa createBookJpa(String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type, Integer size) {
         BookJpa bookJpa = new BookJpa();
         bookJpa.setTitle(title);
         bookJpa.setAuthors(authors);
@@ -257,25 +258,25 @@ class BookJpaRepositoryTest {
         bookJpa.setPublicationYear(year);
         bookJpa.setIsbn(isbn);
         bookJpa.setCover(type);
+        bookJpa.setSize(size);
         return bookJpa;
     }
 
     private static Stream<Arguments> prepareData() {
         return Stream.of(
-                Arguments.of(null, CITY, ISBN, CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of("", CITY, ISBN, CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of("  ", CITY, ISBN, CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of("A", CITY, ISBN, CommonMessageConstants.VALUE_TOO_SHORT),
-                Arguments.of(TOO_LONG_STRING_50, CITY, ISBN, CommonMessageConstants.VALUE_TOO_LONG),
-                Arguments.of(TITLE, "A", ISBN, CommonMessageConstants.VALUE_TOO_SHORT),
-                Arguments.of(TITLE, TOO_LONG_STRING_32, ISBN, CommonMessageConstants.VALUE_TOO_LONG),
-                Arguments.of(TITLE, CITY, null, CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of(TITLE, CITY, "", CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of(TITLE, CITY, "  ", CommonMessageConstants.NOT_BLANK_MSG),
-                Arguments.of(TITLE, CITY, ISBN_TOO_SHORT, CommonMessageConstants.VALUE_TOO_SHORT),
-                Arguments.of(TITLE, CITY, ISBN_TOO_LONG, CommonMessageConstants.VALUE_TOO_LONG)
+                Arguments.of(null, CITY, ISBN, SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of("", CITY, ISBN, SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of("  ", CITY, ISBN, SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of("A", CITY, ISBN, SIZE, CommonMessageConstants.VALUE_TOO_SHORT),
+                Arguments.of(TOO_LONG_STRING_50, CITY, ISBN, SIZE, CommonMessageConstants.VALUE_TOO_LONG),
+                Arguments.of(TITLE, "A", ISBN, SIZE, CommonMessageConstants.VALUE_TOO_SHORT),
+                Arguments.of(TITLE, TOO_LONG_STRING_32, ISBN, SIZE, CommonMessageConstants.VALUE_TOO_LONG),
+                Arguments.of(TITLE, CITY, null, SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of(TITLE, CITY, "", SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of(TITLE, CITY, "  ", SIZE, CommonMessageConstants.NOT_BLANK_MSG),
+                Arguments.of(TITLE, CITY, ISBN_TOO_SHORT, SIZE, CommonMessageConstants.VALUE_TOO_SHORT),
+                Arguments.of(TITLE, CITY, ISBN_TOO_LONG, SIZE, CommonMessageConstants.VALUE_TOO_LONG),
+                Arguments.of(TITLE, CITY, ISBN, 0, CommonMessageConstants.MIN_VALUE)
         );
     }
-
-
 }

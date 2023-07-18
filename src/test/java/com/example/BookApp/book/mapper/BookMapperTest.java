@@ -182,6 +182,7 @@ class BookMapperTest {
                 .publisher(publisher) //
                 .isbn(isbn) //
                 .cover(COVER_TYPE) //
+                .size(25) //
                 .version(VERSION) //
                 .audit(new Audit()) //
                 .build();
@@ -201,6 +202,7 @@ class BookMapperTest {
         bookJpa.setCover(COVER_TYPE); //
         bookJpa.setVersion(VERSION); //
         bookJpa.setAudit(audit); //
+        bookJpa.setSize(25); //
         return bookJpa;
     }
 }

@@ -6,5 +6,6 @@ public class CommonMessageConstants {
     public static final String VALUE_TOO_LONG = "Provided value is too long!";
     public static final String NOT_BLANK_MSG = "Field can not contain only \"white digits\"!";
     public static final String NOT_NULL = "Field can not be empty!";
+    public static final String MIN_VALUE = "Provided value is smaller than expected min value!";
 
 }

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,6 +33,8 @@ public class Book {
     private String isbn;
 
     private CoverType cover;
+
+    private Integer size;
 
     private Audit audit;
 

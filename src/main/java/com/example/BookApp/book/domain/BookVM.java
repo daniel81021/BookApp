@@ -50,5 +50,9 @@ public class BookVM {
     @NotNull(message = CommonMessageConstants.NOT_BLANK_MSG)
     private CoverType cover;
 
+    @NotNull
+    @Min(value = 1, message = CommonMessageConstants.MIN_VALUE)
+    private Integer size;
+
     private Long version;
 }

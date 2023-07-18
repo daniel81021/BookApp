@@ -24,4 +24,11 @@ public class BookController {
         Book savedBook = bookService.save(book);
         return mapper.toBookVM(savedBook);
     }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    BookVM findBookById(@PathVariable Long id){
+        Book book = bookService.findById(id);
+        return mapper.toBookVM(book);
+    }
 }
