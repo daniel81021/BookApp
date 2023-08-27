@@ -15,7 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -106,7 +108,7 @@ class BookMapperTest {
         AuthorJpa author2 = createAuthorJpa(ID_2, NAME_2, SURNAME_2);
         AuthorJpa author3 = createAuthorJpa(ID_3, NAME_3, SURNAME_3);
 
-        Set<AuthorJpa> authorJpas = new HashSet<>();
+        List<AuthorJpa> authorJpas = new ArrayList<>();
         authorJpas.add(author);
         authorJpas.add(author2);
         authorJpas.add(author3);
@@ -188,7 +190,7 @@ class BookMapperTest {
                 .build();
     }
 
-    private BookJpa createBookJpa(Long id, String title, Set<AuthorJpa> authorJpas, PublisherJpa publisher, String isbn) {
+    private BookJpa createBookJpa(Long id, String title, List<AuthorJpa> authorJpas, PublisherJpa publisher, String isbn) {
         Audit audit = createAudit();
         BookJpa bookJpa = new BookJpa(); //
         bookJpa.setId(id); //

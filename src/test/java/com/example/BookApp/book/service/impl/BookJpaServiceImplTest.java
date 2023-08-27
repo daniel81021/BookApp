@@ -20,7 +20,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,7 +66,7 @@ class BookJpaServiceImplTest {
         AuthorJpa authorJpa = createAuthorJpa(ID, NAME, SURNAME, VERSION);
         AuthorJpa authorJpa2 = createAuthorJpa(ID_2, NAME_2, SURNAME_2, VERSION);
 
-        Set<AuthorJpa> authorJpas = new HashSet<>(Set.of(authorJpa, authorJpa2));
+        List<AuthorJpa> authorJpas = new ArrayList<>(List.of(authorJpa, authorJpa2));
 
         PublisherJpa publisherJpa = createPublisherJpa();
 
@@ -106,7 +108,7 @@ class BookJpaServiceImplTest {
         return publisherJpa;
     }
 
-    private BookJpa createBookJpa(Long id, String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type, Long version) {
+    private BookJpa createBookJpa(Long id, String title, List<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type, Long version) {
         BookJpa bookJpa = new BookJpa();
         bookJpa.setId(id);
         bookJpa.setTitle(title);

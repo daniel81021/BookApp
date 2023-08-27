@@ -16,9 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -41,7 +39,8 @@ public class BookJpa {
     private String title;
 
     @OneToMany
-    private Set<AuthorJpa> authors = new HashSet<>();
+    @JoinColumn(name = "book_id")
+    private List<AuthorJpa> authors = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
@@ -87,6 +86,11 @@ public class BookJpa {
         city = city == null || city.isBlank() ? "b.m.w." : city;
         publicationYear = publicationYear == null || publicationYear.isBlank() ? "b.d.w" : publicationYear;
         isbn = isbn == null ? null : cleanISBN(isbn);
+    }
+
+    @PreUpdate
+    private void preUpdateForEntity(){
+        publicationYear = publicationYear == null || publicationYear.isBlank() ? "b.d.w" : publicationYear;
     }
 
     private String cleanISBN(String isbn) { //

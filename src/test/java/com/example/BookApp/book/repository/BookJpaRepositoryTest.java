@@ -18,8 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.validation.ConstraintViolationException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,7 +65,7 @@ class BookJpaRepositoryTest {
         AuthorJpa saved2 = authorJpaRepository.save(authorJpa2);
         AuthorJpa saved3 = authorJpaRepository.save(authorJpa3);
 
-        Set<AuthorJpa> authors = new HashSet<>();
+        List<AuthorJpa> authors = new ArrayList<>();
         authors.add(saved);
         authors.add(saved2);
         authors.add(saved3);
@@ -117,7 +117,7 @@ class BookJpaRepositoryTest {
         AuthorJpa saved2 = authorJpaRepository.save(authorJpa2);
         AuthorJpa saved3 = authorJpaRepository.save(authorJpa3);
 
-        Set<AuthorJpa> authors = new HashSet<>();
+        List<AuthorJpa> authors = new ArrayList<>();
         authors.add(saved);
         authors.add(saved2);
         authors.add(saved3);
@@ -147,7 +147,7 @@ class BookJpaRepositoryTest {
         AuthorJpa saved2 = authorJpaRepository.save(authorJpa2);
         AuthorJpa saved3 = authorJpaRepository.save(authorJpa3);
 
-        Set<AuthorJpa> authors = new HashSet<>();
+        List<AuthorJpa> authors = new ArrayList<>();
         authors.add(saved);
         authors.add(saved2);
         authors.add(saved3);
@@ -177,7 +177,7 @@ class BookJpaRepositoryTest {
         AuthorJpa saved2 = authorJpaRepository.save(authorJpa2);
         AuthorJpa saved3 = authorJpaRepository.save(authorJpa3);
 
-        Set<AuthorJpa> authors = new HashSet<>();
+        List<AuthorJpa> authors = new ArrayList<>();
         authors.add(saved);
         authors.add(saved2);
         authors.add(saved3);
@@ -209,12 +209,7 @@ class BookJpaRepositoryTest {
         AuthorJpa saved2 = authorJpaRepository.save(authorJpa2);
         AuthorJpa saved3 = authorJpaRepository.save(authorJpa3);
 
-        Set<AuthorJpa> authors = new HashSet<>();
-        authors.add(saved);
-        authors.add(saved2);
-        authors.add(saved3);
-
-        Set<AuthorJpa> authors2 = new HashSet<>();
+        List<AuthorJpa> authors = new ArrayList<>();
         authors.add(saved);
         authors.add(saved2);
         authors.add(saved3);
@@ -226,7 +221,7 @@ class BookJpaRepositoryTest {
         BookJpa bookJpa = createBookJpa(TITLE, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
         bookJpaRepository.save(bookJpa);
 
-        BookJpa bookJpa2 = createBookJpa(TITLE_2, authors2, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
+        BookJpa bookJpa2 = createBookJpa(TITLE_2, authors, CITY, savedPublisherJpa, YEAR_1999, ISBN, COVER_TYPE, SIZE);
 
         // when
         BookJpa result = bookJpaRepository.save(bookJpa2);
@@ -249,7 +244,7 @@ class BookJpaRepositoryTest {
         return publisherJpa;
     }
 
-    private BookJpa createBookJpa(String title, Set<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type, Integer size) {
+    private BookJpa createBookJpa(String title, List<AuthorJpa> authors, String city, PublisherJpa publisherJpa, String year, String isbn, CoverType type, Integer size) {
         BookJpa bookJpa = new BookJpa();
         bookJpa.setTitle(title);
         bookJpa.setAuthors(authors);
